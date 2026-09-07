@@ -1,0 +1,24 @@
+{
+  "dataset_id": "workflow-events-synthetic",
+  "version": "1.0.0",
+  "license": "MIT",
+  "source_urls": [],
+  "provenance": "Original deterministic generator; no external or personal records",
+  "sha256": "56d1e4f989d7375e0adb6a78f48912970d6f2e4e98068208c1d7f9d738640ddd",
+  "conditions": {
+    "jobs": 100,
+    "seed": 17,
+    "lines": 313,
+    "unique_events": 300,
+    "intentional_duplicates": 10,
+    "malformed": 3,
+    "out_of_order": true,
+    "synthetic": true
+  },
+  "split_method": "No learned model or tuning; fixtures and seeded benchmark workloads",
+  "seed": 17,
+  "limitations": [
+    "Synthetic state-change events",
+    "Real durable service integration recorded separately"
+  ]
+}
