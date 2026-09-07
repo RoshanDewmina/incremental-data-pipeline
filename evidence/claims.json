@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "wording_status": "user_review_pending",
+  "mastery_status": "pending",
+  "claims": [
+    {
+      "id": "idp-replay-001",
+      "capability_tags": [
+        "data-engineering",
+        "recovery",
+        "data-quality"
+      ],
+      "implementation_refs": [
+        "pipeline/engine.py",
+        "tests/test_pipeline.py"
+      ],
+      "source_revision": "5a584856f9613d9bad73fba115a4c49b11cb10c4",
+      "receipt_refs": [
+        "evidence/benchmark.json",
+        "evidence/integration.json"
+      ],
+      "conditions": "Local synthetic workload2000jobs,6000unique events; actual3-event durable-service integration separately recorded",
+      "limitations": [
+        "Single host SQLite",
+        "First-accepted conflicting identities require reconciliation",
+        "No production scale or personal mastery claim"
+      ],
+      "draft_resume_wording": "Implemented a checkpointed event pipeline with duplicate/conflict handling, quarantine and lineage; verified interrupted-run recovery and analytical-state convergence against a full recomputation oracle.",
+      "wording_status": "user_review_pending",
+      "mastery_status": "pending"
+    }
+  ]
+}

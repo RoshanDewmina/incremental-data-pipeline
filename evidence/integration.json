@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "source_revision": "39e4f75c34d8dfba2ffe975f8d6a1fddbbd620e8",
+  "producer_revision": "8485ff45637c9376c71547c58eba47b0940c7fd2",
+  "timestamp": "2026-09-07T03:55:16.288865+00:00",
+  "command": "Root actual HTTP POST /jobs -> poll -> authenticated GET /events -> JSONL ingest -> quality/oracle",
+  "exit_status": 0,
+  "inputs": {
+    "records": [
+      1,
+      2,
+      3
+    ],
+    "job_id": "40be0b4e-7928-4063-86ea-fb81bc37f53a",
+    "export_sha256": "fba8352848eaf4cb1a8d470c66ecffc9f524f9d68b44510de68200c8637ee12b"
+  },
+  "results": {
+    "terminal_state": "succeeded",
+    "ingestion": {
+      "accepted": 3,
+      "duplicate": 0,
+      "quarantined": 0,
+      "source_hash": "fba8352848eaf4cb1a8d470c66ecffc9f524f9d68b44510de68200c8637ee12b",
+      "line_count": 3,
+      "checkpoint": 3,
+      "complete": true
+    },
+    "quality": {
+      "passed": true,
+      "integrity": "ok",
+      "foreign_key_violations": [],
+      "source_accounting": [
+        {
+          "source_hash": "fba8352848eaf4cb1a8d470c66ecffc9f524f9d68b44510de68200c8637ee12b",
+          "checkpoint": 3,
+          "accounted_lines": 3,
+          "passed": true
+        }
+      ],
+      "projection_converged": true,
+      "sequence_gap_warnings": [],
+      "gap_note": "Gaps may be temporarily valid for out-of-order/partial snapshots; they are visible warnings, not silently complete histories"
+    },
+    "analytics": {
+      "groups": [
+        {
+          "tenant_id": "synthetic-alpha",
+          "state": "succeeded",
+          "jobs": 1,
+          "records": 3,
+          "attempts": 1
+        }
+      ],
+      "totals": {
+        "events": 3,
+        "job_latest": 1,
+        "lineage": 3,
+        "quarantine": 0
+      },
+      "errors": [],
+      "sources": [
+        {
+          "source_hash": "fba8352848eaf4cb1a8d470c66ecffc9f524f9d68b44510de68200c8637ee12b",
+          "line_count": 3,
+          "checkpoint": 3
+        }
+      ],
+      "meaning": "Current job state by highest sequence, never arrival order; original events retained"
+    }
+  },
+  "environment": {
+    "os": "macOS-27.0-arm64-arm-64bit-Mach-O",
+    "scope": "Local actual Uvicorn service, synthetic isolated portfolio data"
+  },
+  "limitations": [
+    "One actual service flow; not production event throughput",
+    "Full events exported as bounded snapshot; no streaming broker or network retry adapter"
+  ]
+}
