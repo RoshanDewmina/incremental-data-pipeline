@@ -27,7 +27,7 @@
         "First-accepted conflicting identities require reconciliation",
         "No production scale or personal mastery claim"
       ],
-      "draft_resume_wording": "Implemented a checkpointed event pipeline with duplicate/conflict handling, quarantine and lineage; verified interrupted-run recovery and analytical-state convergence against a full recomputation oracle.",
+      "draft_resume_wording": "Built a checkpointed event pipeline with deduplication, conflict quarantine and record lineage; verified recovery after interruption against a full rebuild.",
       "wording_status": "user_review_pending",
       "mastery_status": "pending"
     }
