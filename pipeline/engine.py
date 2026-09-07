@@ -130,6 +130,19 @@ class Pipeline:
         expected=[latest[key] for key in sorted(latest)]
         return {'converged':actual==expected,'job_count':len(expected),'expected_sha256':hashlib.sha256(canonical(expected).encode()).hexdigest(),'actual_sha256':hashlib.sha256(canonical(actual).encode()).hexdigest(),'scope':'Full Python recomputation over immutable accepted events; conflicts quarantined with first-accepted identity retained'}
 
+    def quality(self):
+        with self.connect() as db:
+            integrity=db.execute('PRAGMA quick_check').fetchone()[0]
+            foreign_keys=[tuple(r) for r in db.execute('PRAGMA foreign_key_check')]
+            source_counts=[]
+            for row in db.execute('SELECT source_hash,checkpoint FROM sources ORDER BY source_hash'):
+                lineage=db.execute('SELECT count(*) FROM lineage WHERE source_hash=?',(row['source_hash'],)).fetchone()[0]
+                quarantined=db.execute('SELECT count(*) FROM quarantine WHERE source_hash=?',(row['source_hash'],)).fetchone()[0]
+                source_counts.append({'source_hash':row['source_hash'],'checkpoint':row['checkpoint'],'accounted_lines':lineage+quarantined,'passed':row['checkpoint']==lineage+quarantined})
+            gaps=[dict(r) for r in db.execute('SELECT tenant_id,job_id,count(*) AS observed,min(sequence) AS minimum,max(sequence) AS maximum FROM events GROUP BY tenant_id,job_id HAVING count(*) != max(sequence)')]
+        projected=self.oracle()
+        return {'passed':integrity=='ok' and not foreign_keys and all(s['passed'] for s in source_counts) and projected['converged'],'integrity':integrity,'foreign_key_violations':foreign_keys,'source_accounting':source_counts,'projection_converged':projected['converged'],'sequence_gap_warnings':gaps,'gap_note':'Gaps may be temporarily valid for out-of-order/partial snapshots; they are visible warnings, not silently complete histories'}
+
     def rebuild(self):
         with self.connect() as db:
             db.execute('BEGIN IMMEDIATE')

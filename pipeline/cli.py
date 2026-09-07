@@ -48,7 +48,7 @@ def main():
     sub=parser.add_subparsers(dest='action',required=True)
     gen=sub.add_parser('generate');gen.add_argument('path');gen.add_argument('--jobs',type=int,default=500);gen.add_argument('--seed',type=int,default=17)
     ingest=sub.add_parser('ingest');ingest.add_argument('path');ingest.add_argument('--batch-size',type=int,default=100)
-    for name in ('analytics','verify','rebuild','benchmark'):sub.add_parser(name)
+    for name in ('analytics','verify','quality','rebuild','benchmark'):sub.add_parser(name)
     args=parser.parse_args()
     if args.action=='generate': result=generate(args.path,args.jobs,args.seed)
     elif args.action=='benchmark':benchmark();return
@@ -57,8 +57,10 @@ def main():
         if args.action=='ingest':result=db.ingest(args.path,args.batch_size)
         elif args.action=='analytics':result=db.analytics()
         elif args.action=='verify':result=db.oracle()
+        elif args.action=='quality':result=db.quality()
         else:result=db.rebuild()
     print(json.dumps(result,indent=2))
+    if args.action=='quality' and not result['passed']:raise SystemExit(1)
     if args.action in ('verify','rebuild') and not result['converged']:raise SystemExit(1)
 
 

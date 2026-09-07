@@ -99,3 +99,28 @@ def test_readonly_http_dashboard_has_no_ingest_endpoint(tmp_path):
         assert c.get('/analytics').json()['totals']['job_latest']==20
         assert c.post('/ingest',json={}).status_code==404
         assert 'Every event accounted for' in c.get('/').text
+
+
+def test_quality_detects_projection_and_checkpoint_corruption(tmp_path):
+    db,source=fixture(tmp_path);db.ingest(source)
+    assert db.quality()['passed']
+    with db.connect() as con:con.execute("UPDATE job_latest SET state='queued'")
+    assert not db.quality()['passed']
+    db.rebuild()
+    assert db.quality()['passed']
+    with db.connect() as con:con.execute('UPDATE sources SET checkpoint=checkpoint+1')
+    assert not db.quality()['passed']
+
+
+def test_valid_shuffles_converge_to_same_projection(tmp_path):
+    import random
+    _,source=fixture(tmp_path,30)
+    lines=source.read_text().splitlines()[:-3]
+    hashes=[]
+    for seed in range(5):
+        random.Random(seed).shuffle(lines)
+        path=tmp_path/f'shuffle-{seed}.ndjson';path.write_text('\n'.join(lines))
+        db=Pipeline(tmp_path/f'shuffle-{seed}.sqlite');db.ingest(path)
+        assert db.quality()['passed']
+        hashes.append(db.oracle()['actual_sha256'])
+    assert len(set(hashes))==1
