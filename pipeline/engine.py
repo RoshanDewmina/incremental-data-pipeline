@@ -89,7 +89,10 @@ class Pipeline:
         content=Path(path).read_bytes()
         if len(content) > 20_000_000: raise ValueError('source exceeds20MB demo limit')
         digest=hashlib.sha256(content).hexdigest()
-        lines=content.decode('utf-8').splitlines()
+        # JSON Lines uses literal LF framing; Unicode separators inside JSON strings are data.
+        lines=content.decode('utf-8').split('\n')
+        if lines[-1]=='':lines.pop()
+        lines=[line.removesuffix('\r') for line in lines]
         stats={'accepted':0,'duplicate':0,'quarantined':0,'source_hash':digest,'line_count':len(lines)}
         with self.connect() as db:
             db.execute('INSERT OR IGNORE INTO sources VALUES (?,?,0)',(digest,len(lines)))

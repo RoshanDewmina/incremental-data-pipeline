@@ -124,3 +124,24 @@ def test_valid_shuffles_converge_to_same_projection(tmp_path):
         assert db.quality()['passed']
         hashes.append(db.oracle()['actual_sha256'])
     assert len(set(hashes))==1
+
+
+@pytest.mark.parametrize('separator',['\u2028','\u0085'])
+@pytest.mark.parametrize('framing',['\n','\r\n'])
+def test_unicode_inside_json_preserves_physical_lines_and_resume(tmp_path,separator,framing):
+    db,source=fixture(tmp_path,1)
+    events=[json.loads(line) for line in source.read_text().splitlines()[:3]]
+    for event in events:event['note']='before'+separator+'after'
+    source.write_bytes((framing.join(json.dumps(e,ensure_ascii=False) for e in events)+framing).encode())
+    partial=db.ingest(source,1,1)
+    assert partial['checkpoint']==1 and not partial['complete']
+    result=Pipeline(db.path).ingest(source,1)
+    assert result['complete'] and result['checkpoint']==3 and result['quarantined']==0
+    assert db.analytics()['totals']['events']==3 and db.quality()['passed']
+    with db.connect() as con:
+        bodies=[json.loads(r[0]) for r in con.execute('SELECT body FROM events')]
+        assert all(e['note']=='before'+separator+'after' for e in bodies)
+    source.write_bytes(source.read_bytes()+framing.encode())
+    backfill=db.ingest(source)
+    assert backfill['duplicate']==3 and backfill['quarantined']==1
+    assert backfill['checkpoint']==4 and db.quality()['passed']
