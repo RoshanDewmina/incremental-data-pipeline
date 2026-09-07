@@ -14,10 +14,12 @@
         "pipeline/engine.py",
         "tests/test_pipeline.py"
       ],
-      "source_revision": "5a584856f9613d9bad73fba115a4c49b11cb10c4",
+      "source_revision": "126f4ae9a5f5a42458645b841da6be34aa3a036a",
       "receipt_refs": [
         "evidence/benchmark.json",
-        "evidence/integration.json"
+        "evidence/integration.json",
+        "evidence/correction-checks.json",
+        "evidence/independent-review.json"
       ],
       "conditions": "Local synthetic workload2000jobs,6000unique events; actual3-event durable-service integration separately recorded",
       "limitations": [

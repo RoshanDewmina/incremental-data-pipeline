@@ -1,0 +1,53 @@
+{
+  "verdict": "approve",
+  "repository": "incremental-data-pipeline",
+  "source_revision": "126f4ae9a5f5a42458645b841da6be34aa3a036a",
+  "reviewed_at": "2026-09-07T04:28:16.396Z",
+  "scope": "One bounded correction review against0c2a0d1; complete3-file diff, affected ingestion framing/accounting and container exclusions reviewed. No reviewer source edits.",
+  "findings": [],
+  "resolved_findings": [
+    {
+      "file": "incremental-data-pipeline/pipeline/engine.py:93",
+      "status": "resolved",
+      "evidence": "Literal LF splitting preserves Unicode inside JSON strings; optional terminal CR handling supports CRLF. One terminal LF does not create a fake record. Physical line positions now match source lineage and checkpoints."
+    },
+    {
+      "file": "incremental-data-pipeline/.dockerignore:1",
+      "status": "resolved",
+      "evidence": "Docker build context excludes .git, .venv, caches, .env, generated databases, output and local data; runtime generator remains available for isolated demonstration."
+    }
+  ],
+  "checks": [
+    {
+      "name": "uv run --frozen pytest -q",
+      "status": "passed",
+      "evidence": "19tests passed, including four Unicode U+2028/U+0085 x LF/CRLF variants exercising resume/backfill and preserved event strings. Two upstream TestClient deprecation warnings."
+    },
+    {
+      "name": "Original Unicode corruption reproduction",
+      "status": "passed",
+      "evidence": "One physical UTF-8 JSONL line containing both literal U+2028 and U+0085 in a v1 additive field: accepted1/quarantined0, line_count1/checkpoint1, lineage line1 to correct event_id, quality passed and rebuild converged."
+    },
+    {
+      "name": "Boundary framing/accounting probes",
+      "status": "passed",
+      "evidence": "Independent empty source, one blank LF, two blank LF and blank CRLF checks preserved expected physical counts and quarantine totals; quality passed for each."
+    },
+    {
+      "name": "Full correction and dependent review",
+      "status": "passed",
+      "evidence": "Read complete engine framing, regression tests and .dockerignore diff. Ingest's content hash, transaction, checkpoint, lineage/quarantine and projection logic remains unchanged; CLI/API dependents retain their previous contract."
+    },
+    {
+      "name": "Root Linux container evidence inspection",
+      "status": "passed",
+      "evidence": "evidence/container.json refers to126f4ae and image sha256:1246832627a1ed62aecc8e556c7ece03f0f633e40915145a54117c12db7ebb15. Reports successful Linux ARM64 Python3.12 generator/ingest/API path with60 events,20 jobs,62 lineage records and3 quarantines. Reviewer did not rerun Docker."
+    }
+  ],
+  "limitations": [
+    "Root was adding evidence-only files during rereview; final receipt commit and publication/deployment acceptance remain root-owned.",
+    "Prior controlled SIGKILL inside an uncommitted batch, valid-history oracle convergence and conflict tests remain applicable; transactional ingestion code did not change.",
+    "Content-addressed immutable files remain capped local snapshots, with first-accepted identity conflict semantics and single-host SQLite limits.",
+    "Container evidence is a local Linux demonstration, not public deployment or production throughput."
+  ]
+}

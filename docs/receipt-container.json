@@ -1,0 +1,23 @@
+{
+  "source_revision": "126f4ae9a5f5a42458645b841da6be34aa3a036a",
+  "command": "docker build -t career-pipeline:review .; docker run isolated generator20jobs -> ingest -> API; GET health/analytics",
+  "exit_status": 0,
+  "environment": "macOS-27.0-arm64-arm-64bit",
+  "container_os": "LinuxARM64 python3.12-slim",
+  "health": {
+    "status": "ok",
+    "service": "incremental-data-pipeline",
+    "version": "0.1.0"
+  },
+  "totals": {
+    "events": 60,
+    "job_latest": 20,
+    "lineage": 62,
+    "quarantine": 3
+  },
+  "image_id": "sha256:1246832627a1ed62aecc8e556c7ece03f0f633e40915145a54117c12db7ebb15",
+  "limitations": [
+    "Local disposable container",
+    "Synthetic20job workload, not public deployment"
+  ]
+}

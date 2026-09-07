@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "source_revision": "5a584856f9613d9bad73fba115a4c49b11cb10c4",
+  "dirty_tree": false,
+  "timestamp": "2026-09-07T03:48:40.306192+00:00",
+  "command": "make benchmark",
+  "exit_status": 0,
+  "environment": {
+    "os": "macOS-27.0-arm64-arm-64bit-Mach-O",
+    "architecture": "arm64",
+    "python": "3.13.5 (main, Jun 12 2025, 12:22:43) [Clang 20.1.4 ]",
+    "cpu_count": 10
+  },
+  "inputs": {
+    "jobs": 2000,
+    "seed": 17,
+    "lines": 6203,
+    "unique_events": 6000,
+    "intentional_duplicates": 200,
+    "malformed": 3,
+    "out_of_order": true,
+    "synthetic": true
+  },
+  "results": {
+    "partial_checkpoint": 219,
+    "partial_elapsed_ms": 16.46954199532047,
+    "resume": {
+      "accepted": 5782,
+      "duplicate": 199,
+      "quarantined": 3,
+      "source_hash": "1a9e93a231df6f6cab7188e6fe838e54ecb9c93740b5486a5c6b99ffa3b8514f",
+      "line_count": 6203,
+      "checkpoint": 6203,
+      "complete": true
+    },
+    "resume_events_per_second": 11644.365245437688,
+    "replay_ms": 6.328374991426244,
+    "backfill_seconds": 0.18878795798809733,
+    "backfill": {
+      "accepted": 0,
+      "duplicate": 6200,
+      "quarantined": 4,
+      "source_hash": "d0673472f0ff0cc84582575e6469e53f4c312f392577bd8c3e813ea6a213249b",
+      "line_count": 6204,
+      "checkpoint": 6204,
+      "complete": true
+    },
+    "rebuild_ms": 107.07120900042355,
+    "median_query_ms": 3.3645414951024577,
+    "oracle": {
+      "converged": true,
+      "job_count": 2000,
+      "expected_sha256": "d9b1f2c9c491008c5263ad724c890fb859936fda75e635d244e28bb2e9a24c33",
+      "actual_sha256": "d9b1f2c9c491008c5263ad724c890fb859936fda75e635d244e28bb2e9a24c33",
+      "scope": "Full Python recomputation over immutable accepted events; conflicts quarantined with first-accepted identity retained"
+    },
+    "analytics": {
+      "groups": [
+        {
+          "tenant_id": "synthetic-alpha",
+          "state": "failed",
+          "jobs": 143,
+          "records": 6650,
+          "attempts": 143
+        },
+        {
+          "tenant_id": "synthetic-alpha",
+          "state": "succeeded",
+          "jobs": 857,
+          "records": 43508,
+          "attempts": 857
+        },
+        {
+          "tenant_id": "synthetic-beta",
+          "state": "failed",
+          "jobs": 143,
+          "records": 7097,
+          "attempts": 143
+        },
+        {
+          "tenant_id": "synthetic-beta",
+          "state": "succeeded",
+          "jobs": 857,
+          "records": 42830,
+          "attempts": 857
+        }
+      ],
+      "totals": {
+        "events": 6000,
+        "job_latest": 2000,
+        "lineage": 12400,
+        "quarantine": 7
+      },
+      "errors": [
+        {
+          "reason": "invalid_record_count",
+          "count": 2
+        },
+        {
+          "reason": "malformed_json_or_value",
+          "count": 3
+        },
+        {
+          "reason": "unsupported_schema",
+          "count": 2
+        }
+      ],
+      "sources": [
+        {
+          "source_hash": "1a9e93a231df6f6cab7188e6fe838e54ecb9c93740b5486a5c6b99ffa3b8514f",
+          "line_count": 6203,
+          "checkpoint": 6203
+        },
+        {
+          "source_hash": "d0673472f0ff0cc84582575e6469e53f4c312f392577bd8c3e813ea6a213249b",
+          "line_count": 6204,
+          "checkpoint": 6204
+        }
+      ],
+      "meaning": "Current job state by highest sequence, never arrival order; original events retained"
+    }
+  },
+  "limitations": [
+    "Synthetic local workload; same source order for identity conflicts",
+    "Resume is tested after committed batch boundary; pytest also kills a child mid-run",
+    "20MB source cap, SQLite single host, no streaming broker",
+    "Rates reflect this host and cache conditions; not production throughput"
+  ]
+}
