@@ -9,7 +9,7 @@ from .engine import Pipeline
 
 def create_app(path=None):
     db=Pipeline(path or os.environ.get('PIPELINE_DB','analytics.sqlite'))
-    app=FastAPI(title='Incremental event analytics',version='0.1.0')
+    app=FastAPI(title='Event Data Pipeline',version='0.1.0')
 
     @app.get('/health')
     def health():

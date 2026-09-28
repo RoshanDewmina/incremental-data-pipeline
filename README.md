@@ -1,4 +1,4 @@
-# Incremental data pipeline
+# Event Data Pipeline
 
 Turn workflow state-change events into inspectable current-state analytics. The pipeline accounts for duplicate, late, malformed and out-of-order observations, preserves accepted events and source lineage, quarantines conflicts, and resumes interrupted immutable-file ingestion from committed checkpoints.
 
