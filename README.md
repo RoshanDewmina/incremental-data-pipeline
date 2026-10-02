@@ -66,4 +66,4 @@ Integration with durable-workflows uses the same version1 event envelope. Export
 
 The input snapshot is capped at20MB and loaded into memory. The service is single-host SQLite, not a distributed stream processor. The generator and retained demo inputs are original MIT synthetic data. Real customer events or credentials are not included. There is no production privacy, completeness, latency SLA, distributed replication or infinite-retention claim. Code/data: MIT (`LICENSE`). FastAPI: MIT, uv: MIT/Apache-2.0; exact dependencies are locked.
 
-Official implementation references: [SQLite transactions](https://www.sqlite.org/lang_transaction.html), [SQLite WAL](https://www.sqlite.org/wal.html), [FastAPI](https://fastapi.tiangolo.com/). Personal mastery and all draft resume wording remain pending user review. See `docs/interview-guide.md`.
+Official implementation references: [SQLite transactions](https://www.sqlite.org/lang_transaction.html), [SQLite WAL](https://www.sqlite.org/wal.html), [FastAPI](https://fastapi.tiangolo.com/).
